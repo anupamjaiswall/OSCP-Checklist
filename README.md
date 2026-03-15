@@ -13,9 +13,8 @@ EXAM SCORING (PEN-200 2023+):
   ├── Active Directory Set       → 40 pts
   ├── Standalone Machine 1       → 20 pts (10 local + 10 proof)
   ├── Standalone Machine 2       → 20 pts (10 local + 10 proof)
-  ├── Standalone Machine 3       → 20 pts (10 local + 10 proof)
-  └── BOF (if present)           → 20 pts
-  TOTAL: 100 pts  |  PASS: 70 pts  |  +10 bonus with lab report
+  └── Standalone Machine 3       → 20 pts (10 local + 10 proof)
+  TOTAL: 100 pts  |  PASS: 70 pts  
 
 THE GOLDEN RULES:
   1. Enumerate EVERYTHING before exploiting ANYTHING
@@ -25,12 +24,11 @@ THE GOLDEN RULES:
   5. Document EVERY step as you go — reproduce it in the report
   6. Screenshots: IP + hostname + whoami/id + flag in SAME frame
   7. Metasploit on ONE machine max — save it for the hardest
-  8. BOF first — easiest guaranteed points, do it in <20 min
-  9. Breaks every 3-4 hours — mandatory, not optional
-  10. It's never as complex as you think — go back to basics
+  8. Breaks every 3-4 hours — mandatory, not optional
+  9. It's never as complex as you think — go back to basics
 
 ATTACK ORDER (proven):
-  BOF (20 pts) → AD Set (40 pts) → Standalones → Report
+  AD Set (40 pts) → Standalones → Report
 ```
 
 </details>
