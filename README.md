@@ -2948,6 +2948,9 @@ netsh advfirewall firewall add rule name="WinRM" dir=in action=allow protocol=TC
 <summary>👁️ 10.1 Full Situational Awareness</summary>
 
 ```bash
+# get python interactive shell =>
+python3 -c 'import pty;pty.spawn("/bin/bash")' ; stty raw -echo ; fg
+
 # ── RUN THIS ENTIRE BLOCK IMMEDIATELY AFTER GETTING SHELL ─────
 id; whoami; hostname; cat /etc/os-release; uname -a
 ip a; ip route; cat /etc/hosts; arp -a
