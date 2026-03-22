@@ -145,7 +145,7 @@ script ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
 
 # Web content discovery
 /usr/share/seclists/Discovery/Web-Content/common.txt
-/usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+/usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
 /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-big.txt
 /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
 /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt
@@ -563,13 +563,13 @@ curl -sL http://$IP | head -100   # Quick source check
 # ── CONTENT DISCOVERY COMBO (run all simultaneously) ──────────
 # Gobuster — fast, reliable
 gobuster dir -u http://$IP \
-  -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
+  -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt \
   -x php,html,txt,asp,aspx,jsp,py,rb,bak,old,zip,gz,sql,json,xml,config \
   -t 50 -o scans/web/gobuster.txt
 
 # Feroxbuster — recursive (finds /admin/login, /api/v1/users etc.)
 feroxbuster -u http://$IP \
-  -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
+  -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt \
   -x php,html,txt,asp,aspx -t 50 --depth 3 -o scans/web/ferox.txt
 
 # FFUF — best for parameter fuzzing
