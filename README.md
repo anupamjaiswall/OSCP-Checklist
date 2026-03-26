@@ -4937,6 +4937,10 @@ OSCP EXAM GUIDE:
 <summary>⚡ 19.5 One-Liner Command Bank</summary>
 
 ```bash
+
+# mtu packet set
+sudo ifconfig tun0 mtu 1198
+
 # ── QUICK WINS ────────────────────────────────────────────────
 # Check sudo instantly:
 sudo -l 2>/dev/null
