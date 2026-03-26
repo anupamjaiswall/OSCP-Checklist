@@ -324,13 +324,13 @@ for port in tree.findall('.//port[@protocol=\"tcp\"]'):
 
 ```bash
 # Basic
-autorecon $IP
+sudo autorecon $IP
 
 # Multiple targets
-autorecon 10.10.10.1 10.10.10.2 10.10.10.3
+sudo autorecon 10.10.10.1 10.10.10.2 10.10.10.3
 
 # With options
-autorecon $IP --single-target --output ~/oscp/$IP/scans
+sudo autorecon $IP --single-target --output ~/oscp/$IP/scans
 
 # Autorecon output structure:
 # results/$IP/
