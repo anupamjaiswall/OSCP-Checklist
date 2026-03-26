@@ -2404,6 +2404,9 @@ hashcat -m 1000 hashes.txt rockyou.txt -r /usr/share/hashcat/rules/best64.rule
 hashcat -m 1000 hashes.txt rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule
 hashcat -m 0 hashes.txt rockyou.txt -r /usr/share/hashcat/rules/d3ad0ne.rule
 
+# tell hashcat that there is username as well inside hash
+hashcat -m 500 hashes.txt /usr/share/wordlists/rockyou.txt --username
+
 # Attack modes:
 hashcat -m 1000 -a 0 hash.txt rockyou.txt           # Wordlist
 hashcat -m 1000 -a 1 hash.txt words1.txt words2.txt  # Combinator
@@ -2423,7 +2426,7 @@ john hash.txt --wordlist=rockyou.txt --rules=All
 john hash.txt --format=NT --wordlist=rockyou.txt
 john hash.txt --show
 john hash.txt --show --format=NT
-
+john hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=md5crypt
 # Format conversions (john's *2john tools):
 ssh2john id_rsa > id_rsa.hash
 zip2john protected.zip > zip.hash
