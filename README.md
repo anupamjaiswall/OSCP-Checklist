@@ -112,6 +112,9 @@ function newbox() {
 # Start session
 tmux new -s oscp
 
+# Record everything
+script ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
+
 # Essential keybinds:
 # Ctrl+B %       → Split vertical
 # Ctrl+B "       → Split horizontal
@@ -127,9 +130,6 @@ tmux new -s oscp
 # ├─────────────┼─────────────┤
 # │  exploit    │ notes/misc  │
 # └─────────────┴─────────────┘
-
-# Record everything
-script ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
 ```
 
 </details>
