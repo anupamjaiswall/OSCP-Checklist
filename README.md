@@ -2956,15 +2956,15 @@ python3 -c 'import pty;pty.spawn("/bin/bash")' ; stty raw -echo ; fg
 
 #if above doesn't work =>
 1. On target (reverse shell):
-```python3 -c 'import pty;pty.spawn("/bin/bash")'```
+python3 -c 'import pty;pty.spawn("/bin/bash")'
 2. Press: Ctrl + Z
 3. On your attacker machine terminal:
-```stty raw -echo```
+stty raw -echo
 4. Bring shell back:
-```fg```
+fg
 5. Press Enter
 6. Fix terminal:
-```export TERM=xterm```
+export TERM=xterm
 
 # ── RUN THIS ENTIRE BLOCK IMMEDIATELY AFTER GETTING SHELL ─────
 id; whoami; hostname; cat /etc/os-release; uname -a
