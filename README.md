@@ -257,25 +257,25 @@ ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u htt
 
 ```bash
 # STEP 1: Ultra-fast all ports (run first, don't wait)
-nmap -p- --min-rate 10000 -T4 $IP -oN scans/nmap/allports.txt &
+nmap -Pn -p- --min-rate 10000 -T4 $IP -oN scans/nmap/allports.txt &
 
 # STEP 2: Meanwhile, top 1000 with scripts (quicker results while full scan runs)
-nmap -sC -sV -T4 $IP -oN scans/nmap/initial.txt
+nmap -Pn -sC -sV -T4 $IP -oN scans/nmap/initial.txt
 
 # STEP 3: When all-ports finishes, targeted deep scan
 ports=$(grep ^[0-9] scans/nmap/allports.txt | cut -d'/' -f1 | tr '\n' ',' | sed 's/,$//')
 echo "Open ports: $ports"
-nmap -sC -sV -p$ports $IP -oN scans/nmap/targeted.txt
+nmap -Pn -sC -sV -p$ports $IP -oN scans/nmap/targeted.txt
 
 # STEP 4: UDP (always do this — services hide here!)
-sudo nmap -sU --top-ports 100 $IP -oN scans/nmap/udp.txt
+sudo -Pn nmap -sU --top-ports 100 $IP -oN scans/nmap/udp.txt
 # Critical UDP: 53,67,68,69,111,123,137,138,139,161,162,500,514,1194,1900
 
 # STEP 5: Vulnerability scripts on open ports
-nmap --script vuln -p$ports $IP -oN scans/nmap/vulns.txt
+nmap -Pn --script vuln -p$ports $IP -oN scans/nmap/vulns.txt
 
 # STEP 6: OS detection + aggressive
-nmap -A -p$ports $IP -oN scans/nmap/aggressive.txt
+nmap -Pn -A -p$ports $IP -oN scans/nmap/aggressive.txt
 ```
 
 </details>
