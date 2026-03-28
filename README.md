@@ -2954,6 +2954,18 @@ netsh advfirewall firewall add rule name="WinRM" dir=in action=allow protocol=TC
 # get python interactive shell =>
 python3 -c 'import pty;pty.spawn("/bin/bash")' ; stty raw -echo ; fg
 
+#if above doesn't work =>
+1. On target (reverse shell):
+```python3 -c 'import pty;pty.spawn("/bin/bash")'```
+2. Press: Ctrl + Z
+3. On your attacker machine terminal:
+```stty raw -echo```
+4. Bring shell back:
+```fg```
+5. Press Enter
+6. Fix terminal:
+```export TERM=xterm```
+
 # ── RUN THIS ENTIRE BLOCK IMMEDIATELY AFTER GETTING SHELL ─────
 id; whoami; hostname; cat /etc/os-release; uname -a
 ip a; ip route; cat /etc/hosts; arp -a
