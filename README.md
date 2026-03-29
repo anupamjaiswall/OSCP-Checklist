@@ -1986,6 +1986,9 @@ GET /profile?id=100 → ?id=101
 # ── WORDPRESS ─────────────────────────────────────────────────
 # Scan:
 wpscan --url http://$IP -e u,p,t,vp,vt --api-token TOKEN
+
+# Proper wordpress vulnerable plugin scan will take time : 
+wpscan --url $DOMAIN -e ap --detection-mode aggressive --api-token TOKEN --plugins-detection aggressive
 # User enum only:
 wpscan --url http://$IP -e u
 # Brute force:
