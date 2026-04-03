@@ -4956,6 +4956,9 @@ OSCP EXAM GUIDE:
 
 ```bash
 
+#Finding A file
+find / -type f -name user.txt
+
 # mtu packet set
 sudo ifconfig tun0 mtu 1198
 
