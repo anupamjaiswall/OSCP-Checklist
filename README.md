@@ -4955,6 +4955,9 @@ OSCP EXAM GUIDE:
 <summary>⚡ 19.5 One-Liner Command Bank</summary>
 
 ```bash
+#Git clone and push using ssh : 
+GIT_SSH_COMMAND='ssh -i id_rsa -p 43022' git clone git@192.168.226.125:/git-server
+GIT_SSH_COMMAND='ssh -i ../id_rsa -p 43022' git push origin master
 
 #Finding A file
 find / -type f -name user.txt
