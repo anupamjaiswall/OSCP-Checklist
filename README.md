@@ -1985,7 +1985,9 @@ GET /profile?id=100 → ?id=101
 ```bash
 # ── WORDPRESS ─────────────────────────────────────────────────
 # Scan:
-wpscan --url http://$IP -e u,p,t,vp,vt --api-token TOKEN
+#wpscan --url http://$IP -e u,p,t,vp,vt --api-token TOKEN
+wpscan --url http://$IP -e u,vp,vt --api-token TOKEN
+
 
 # Proper wordpress vulnerable plugin scan will take time : 
 wpscan --url $DOMAIN -e ap --detection-mode aggressive --api-token TOKEN --plugins-detection aggressive
