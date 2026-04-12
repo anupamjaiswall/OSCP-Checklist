@@ -109,11 +109,11 @@ function newbox() {
 <summary>🖥️ 1.3 tmux Setup (NEVER work without it)</summary>
 
 ```bash
-# Start session
-tmux new -s oscp
-
 # Record everything
 script ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
+
+# Start session
+tmux new -s oscp
 
 # Essential keybinds:
 # Ctrl+B %       → Split vertical
