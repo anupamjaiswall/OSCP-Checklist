@@ -3179,6 +3179,8 @@ netsh wlan show profile name="SSID" key=clear    # cleartext key!
 
 ## 12. PRIVILEGE ESCALATION — LINUX (EVERY VECTOR)
 
+copy-fail vulnerability : https://github.com/theori-io/copy-fail-CVE-2026-31431
+
 <details>
 <summary>🤖 12.1 Automated Enumeration — Run All</summary>
 
