@@ -110,7 +110,7 @@ function newbox() {
 
 ```bash
 # Record everything
-script ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
+script -q -c "zsh" ~/oscp/$IP/terminal_$(date +%Y%m%d_%H%M).log
 
 # Start session
 tmux new -s oscp
