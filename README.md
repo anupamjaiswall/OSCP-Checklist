@@ -3184,6 +3184,8 @@ https://github.com/danielino/copy-fail-CVE-2026-31431/blob/main/copy_fail_exp.py
 
 12.0 pkexec : https://github.com/ly4k/PwnKit
 
+12.0 DirtyFrag : https://github.com/V4bel/dirtyfrag
+
 <details>
 <summary>🤖 12.1 Automated Enumeration — Run All</summary>
 
