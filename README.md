@@ -3192,6 +3192,8 @@ https://github.com/danielino/copy-fail-CVE-2026-31431/blob/main/copy_fail_exp.py
 
 12.0 Fragnesia : https://github.com/v12-security/pocs/blob/main/fragnesia%2FREADME.md
 
+12.0 Pack2TheRoot : https://github.com/shibaaa204/Pack2TheRoot.git
+
 <details>
 <summary>🤖 12.1 Automated Enumeration — Run All</summary>
 
