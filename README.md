@@ -555,6 +555,10 @@ dig @$IP domain.com DS
 <summary>🌍 4.5 HTTP / HTTPS — Ports 80, 443, 8080, 8443, 8000, 8888</summary>
 
 ```bash
+
+# __ Nginx _________________
+https://github.com/DepthFirstDisclosures/Nginx-Rift
+
 # ── INITIAL FINGERPRINT ───────────────────────────────────────
 whatweb http://$IP -a 3    # -a 3 = aggressive
 curl -I http://$IP          # Headers (Server, X-Powered-By, etc.)
@@ -3185,6 +3189,8 @@ https://github.com/danielino/copy-fail-CVE-2026-31431/blob/main/copy_fail_exp.py
 12.0 pkexec : https://github.com/ly4k/PwnKit
 
 12.0 DirtyFrag : https://github.com/V4bel/dirtyfrag
+
+12.0 Fragnesia : https://github.com/v12-security/pocs/blob/main/fragnesia%2FREADME.md
 
 <details>
 <summary>🤖 12.1 Automated Enumeration — Run All</summary>
