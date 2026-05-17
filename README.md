@@ -713,7 +713,8 @@ crackmapexec smb $IP -u user -p pass --groups
 crackmapexec smb $IP -u user -p pass --computers
 crackmapexec smb $IP -u user -p pass --loggedon-users
 crackmapexec smb $IP -u user -p pass --disks
-crackmapexec smb $IP -u user -p pass --rid-brute   # RID cycling
+nxc smb $IP -u '' -p '' --rid-brute
+
 
 # ── VULNERABILITY CHECKS ──────────────────────────────────────
 nmap --script smb-vuln-ms17-010,smb-vuln-ms08-067,smb-vuln-cve2009-3103,smb-vuln-ms10-054,smb-vuln-ms10-061,smb-vuln-regsvc-dos -p445 $IP
@@ -859,7 +860,8 @@ for i in $(seq 500 1200); do
   rpcclient -U "" -N $IP -c "queryuser $(printf '0x%x' $i)" 2>/dev/null | grep -i "user name"
 done
 # Or with crackmapexec:
-crackmapexec smb $IP -u '' -p '' --rid-brute
+nxc smb $IP -u '' -p '' --rid-brute
+
 
 # ── MSRPC SPECIFIC ATTACKS ────────────────────────────────────
 # PrintNightmare check:
