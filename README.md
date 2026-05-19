@@ -1098,6 +1098,7 @@ evil-winrm -i $IP -c cert.pem -k key.pem -S
 
 ```bash
 # ── UNAUTHENTICATED ACCESS ────────────────────────────────────
+redis-cli RCE : https://github.com/Ridter/redis-rce/pull/5/changes/be45d113ebcfef407bb1fba8b574c36daa4a2bb9#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5
 redis-cli -h $IP ping          # PONG = accessible
 redis-cli -h $IP
 > info server                   # Version + OS
