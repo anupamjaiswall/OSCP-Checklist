@@ -1389,6 +1389,9 @@ msf> use auxiliary/scanner/smb/smb_ms17_010   # Just scanning
 msf> use auxiliary/scanner/ssh/ssh_enumusers
 msf> use auxiliary/scanner/mssql/mssql_login
 
+# troubleshooting
+# if you are not able to use exploit and error is saying ambiguos; try _reload_all_ command in msf shell.
+
 # ── TIPS ──────────────────────────────────────────────────────
 # OSCP RULE: Metasploit only on 1 machine
 # Use manual exploits for everything else
