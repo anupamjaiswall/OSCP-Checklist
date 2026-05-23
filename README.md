@@ -1391,6 +1391,7 @@ msf> use auxiliary/scanner/mssql/mssql_login
 
 # troubleshooting
 # if you are not able to use exploit and error is saying ambiguos; try _reload_all_ command in msf shell.
+# if after executing _run_ command you are getting unable to load package, then try _msfdb reinit_ in root shell
 
 # ── TIPS ──────────────────────────────────────────────────────
 # OSCP RULE: Metasploit only on 1 machine
