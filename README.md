@@ -5349,6 +5349,12 @@ searchsploit mysql udf
 schtasks /query /fo LIST /v | findstr /i "task to run\|run as"
 # Then check if that binary is writable
 icacls "C:\path\to\task_binary.exe"
+
+# 21. Firewall bypass : 
+X-Originating-IP: 127.0.0.1 or 127.1
+X-Forwarded-For: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
 ```
 
 </details>
