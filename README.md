@@ -3196,6 +3196,7 @@ https://github.com/danielino/copy-fail-CVE-2026-31431/blob/main/copy_fail_exp.py
 12.0 pkexec : https://github.com/ly4k/PwnKit
 
 12.0 DirtyFrag : https://github.com/V4bel/dirtyfrag
+12.0 DirtyClone : https://github.com/entra1337/DirtyClone
 
 12.0 Fragnesia : https://github.com/v12-security/pocs/blob/main/fragnesia%2FREADME.md
 
