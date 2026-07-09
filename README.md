@@ -566,6 +566,7 @@ curl -sL http://$IP | head -100   # Quick source check
 
 # ── CONTENT DISCOVERY COMBO (run all simultaneously) ──────────
 # Gobuster — fast, reliable
+# try DirBuster-2007_directory-list-2.3-medium.txt if you get nothing from raft
 gobuster dir -u http://$IP \
   -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt \
   -x php,html,txt,asp,aspx,jsp,py,rb,bak,old,zip,gz,sql,json,xml,config \
